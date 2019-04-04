@@ -1,4 +1,4 @@
-def label = "jenkins-inf-reverse-proxy-${UUID.randomUUID().toString()}"
+def label = "jenkins-input-repro-${UUID.randomUUID().toString()}"
 def scmVars;
 
 
