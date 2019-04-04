@@ -12,8 +12,8 @@ def installDeps() {
 
 
 def endToEndTests(target) {
-  container('ci') {
-    stage('End to end tests') {
+  stage('End to end tests') {
+    container('ci') {
       parallel '1': {
         sh 'sleep 10'
       }, '2': {
