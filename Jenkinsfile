@@ -23,7 +23,8 @@ def deploy(target) {
   }
 }
 
-podTemplate(label: label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
+def runInPod(thing) {
+ podTemplate(label: label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
 apiVersion: v1
 kind: Pod
 spec:
@@ -31,27 +32,25 @@ spec:
     - name: ci
       image: golang:latest
       tty: true
-      resources:
-        requests:
-          memory: "4Gi"
-          cpu: "2"
-        limits:
-          memory: "6Gi"
-          cpu: "3"
 """
-  ) {
-
-  node(label) {
-    this.deploy('staging')
-    this.endToEndTests('staging')
-  }
-
-  stage('Approve prod') {
-    input message: 'Deploy to prod?'
-  }
-
-  node(label) {
-    this.deploy('prod')
-    this.endToEndTests('prod')
+  ) { 
+    node(label) {
+      thing
+    }
   }
 }
+
+runInPod({
+  this.deploy('staging');
+  this.endToEndTests('staging')
+})
+
+stage('Approve prod') {
+  input message: 'Deploy to prod?'
+}
+
+
+runInPod({
+  this.deploy('prod')
+  this.endToEndTests('prod')
+})
