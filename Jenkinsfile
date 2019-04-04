@@ -24,7 +24,7 @@ def deploy(target) {
 }
 
 def runInPod(thing) {
- podTemplate(label: label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
+ podTemplate(label: this.label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
 apiVersion: v1
 kind: Pod
 spec:
