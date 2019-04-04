@@ -38,6 +38,7 @@ def build(target) {
 def deploy(target) {
   stage("Deploy to ${target}") {
     container('ci') {
+      sh 'sleep 10'
     }
   }
 }
