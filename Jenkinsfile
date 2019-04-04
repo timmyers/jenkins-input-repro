@@ -11,19 +11,19 @@ def installDeps() {
 }
 
 
-// def endToEndTests(target) {
-//   container('ci') {
-//     stage('End to end tests') {
-//       parallel '1': {
-//         sh 'sleep 10'
-//       }, '2': {
-//         sh 'sleep 10'
-//       }, '3': {
-//         sh 'sleep 10'
-//       }
-//     }
-//   }
-// }
+def endToEndTests(target) {
+  container('ci') {
+    stage('End to end tests') {
+      parallel '1': {
+        sh 'sleep 10'
+      }, '2': {
+        sh 'sleep 10'
+      }, '3': {
+        sh 'sleep 10'
+      }
+    }
+  }
+}
 
 def build(target) {
   this.installDeps()
@@ -78,7 +78,7 @@ spec:
       try {
         this.build('dev')
         this.deploy('dev')
-        // this.endToEndTests('dev')
+        this.endToEndTests('dev')
       } catch (err) {
         throw err;
       }
@@ -94,7 +94,7 @@ spec:
       try {
         this.build('staging')
         this.deploy('staging')
-        // this.endToEndTests('staging')
+        this.endToEndTests('staging')
       } catch (err) {
         throw err;
       }
@@ -107,7 +107,7 @@ spec:
     node(label) {
       try {
         this.deploy('prod')
-        // this.endToEndTests('prod')
+        this.endToEndTests('prod')
       } catch (err) {
         throw err;
       }
