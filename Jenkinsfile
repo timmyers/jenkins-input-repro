@@ -34,12 +34,12 @@ spec:
 """
   ) { 
     node(label) {
-      thing
+      thing()
     }
   }
 }
 
-runInPod({
+runInPod(() -> {
   this.deploy('staging');
   this.endToEndTests('staging')
 })
@@ -49,7 +49,7 @@ stage('Approve prod') {
 }
 
 
-runInPod({
+runInPod(() -> {
   this.deploy('prod')
   this.endToEndTests('prod')
 })
