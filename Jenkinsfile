@@ -40,26 +40,10 @@ spec:
           cpu: "3"
 """
   ) {
-  // node(label) {
-  //   stage('Test') { 
-  //     container('ci') {
-  //       sh 'sleep 10'
-  //     }
-  //   }
-  // }
-
-  // stage('Approve staging') {
-  //   input message: 'Deploy to staging?'
-  // }
 
   node(label) {
-    try {
-      // this.build('staging')
-      this.deploy('staging')
-      this.endToEndTests('staging')
-    } catch (err) {
-      throw err;
-    }
+    this.deploy('staging')
+    this.endToEndTests('staging')
   }
 
   stage('Approve prod') {
@@ -67,11 +51,7 @@ spec:
   }
 
   node(label) {
-    try {
-      this.deploy('prod')
-      this.endToEndTests('prod')
-    } catch (err) {
-      throw err;
-    }
+    this.deploy('prod')
+    this.endToEndTests('prod')
   }
 }
