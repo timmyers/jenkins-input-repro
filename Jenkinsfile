@@ -34,7 +34,7 @@ kind: Pod
 spec:
   containers:
     - name: ci
-      image: go:latest
+      image: golang:latest
       tty: true
       resources:
         requests:
