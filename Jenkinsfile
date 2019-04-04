@@ -1,7 +1,6 @@
 def label = "jenkins-input-repro-${UUID.randomUUID().toString()}"
 def scmVars;
 
-
 def installDeps() {
   stage('Install dependencies') {
     container('ci') {
