@@ -1,6 +1,3 @@
-def label = "jenkins-input-repro-${UUID.randomUUID().toString()}"
-def scmVars;
-
 def endToEndTests(target) {
   stage('End to end tests') {
     container('ci') {
@@ -24,7 +21,9 @@ def deploy(target) {
 }
 
 def runInPod(thing) {
- podTemplate(label: this.label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
+  def label = "jenkins-input-repro-${UUID.randomUUID().toString()}"
+
+  podTemplate(label: label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
 apiVersion: v1
 kind: Pod
 spec:
