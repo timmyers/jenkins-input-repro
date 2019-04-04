@@ -11,20 +11,6 @@ def installDeps() {
   }
 }
 
-def endToEndTests(target) {
-  container('ci') {
-    stage('End to end tests') {
-      parallel '1': {
-        sh 'sleep 10'
-      }, '2': {
-        sh 'sleep 10'
-      }, '3': {
-        sh 'sleep 10'
-      }
-    }
-  }
-}
-
 def build(target) {
   this.installDeps()
 
@@ -45,17 +31,11 @@ def deploy(target) {
 podTemplate(label: label, podRetention: onFailure(), activeDeadlineSeconds: 600, yaml: """
 apiVersion: v1
 kind: Pod
-metadata:
-  annotations:
-    cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 spec:
   containers:
     - name: ci
-      image: 204717343847.dkr.ecr.us-east-1.amazonaws.com/infura/infrastructure-ci-go:latest
+      image: go:latest
       tty: true
-      volumeMounts:
-      - name: dockersock
-        mountPath: /var/run/docker.sock
       resources:
         requests:
           memory: "4Gi"
@@ -63,11 +43,6 @@ spec:
         limits:
           memory: "6Gi"
           cpu: "3"
-
-  volumes:
-    - name: dockersock
-      hostPath:
-        path: /var/run/docker.sock
 """
   ) {
   node(label) {
@@ -89,7 +64,6 @@ spec:
       try {
         this.build('dev')
         this.deploy('dev')
-        this.endToEndTests('dev')
       } catch (err) {
         throw err;
       }
@@ -105,7 +79,6 @@ spec:
       try {
         this.build('staging')
         this.deploy('staging')
-        this.endToEndTests('staging')
       } catch (err) {
         throw err;
       }
@@ -118,7 +91,6 @@ spec:
     node(label) {
       try {
         this.deploy('prod')
-        this.endToEndTests('prod')
       } catch (err) {
         throw err;
       }
