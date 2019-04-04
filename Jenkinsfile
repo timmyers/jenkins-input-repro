@@ -48,7 +48,7 @@ spec:
   node(label) {
     this.installDeps()
 
-    stage('Plan and Test') { 
+    stage('Test') { 
       container('ci') {
         sh 'sleep 10'
       }
