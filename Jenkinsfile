@@ -12,6 +12,7 @@ def endToEndTests(target) {
   }
 }
 
+
 def deploy(target) {
   stage("Deploy to ${target}") {
     container('ci') {
@@ -47,7 +48,6 @@ runInPod({
 stage('Approve prod') {
   input message: 'Deploy to prod?'
 }
-
 
 runInPod({
   this.deploy('prod')
