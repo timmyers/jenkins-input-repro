@@ -1,14 +1,14 @@
 def label = "jenkins-input-repro-${UUID.randomUUID().toString()}"
 def scmVars;
 
-def installDeps() {
-  stage('Install dependencies') {
-    container('ci') {
-      scmVars = checkout scm
-      sh 'sleep 10'
-    }
-  }
-}
+// def installDeps() {
+//   stage('Install dependencies') {
+//     container('ci') {
+//       scmVars = checkout scm
+//       sh 'sleep 10'
+//     }
+//   }
+// }
 
 def endToEndTests(target) {
   stage('End to end tests') {
@@ -24,15 +24,15 @@ def endToEndTests(target) {
   }
 }
 
-def build(target) {
-  this.installDeps()
+// def build(target) {
+//   this.installDeps()
 
-  stage('Build and push image') {
-    container('ci') {
-      sh 'sleep 10'
-    }
-  }
-}
+//   stage('Build and push image') {
+//     container('ci') {
+//       sh 'sleep 10'
+//     }
+//   }
+// }
 
 def deploy(target) {
   stage("Deploy to ${target}") {
@@ -60,7 +60,7 @@ spec:
 """
   ) {
   node(label) {
-    this.installDeps()
+    // this.installDeps()
 
     stage('Test') { 
       container('ci') {
@@ -76,7 +76,7 @@ spec:
 
     node(label) {
       try {
-        this.build('dev')
+        // this.build('dev')
         this.deploy('dev')
         this.endToEndTests('dev')
       } catch (err) {
@@ -92,7 +92,7 @@ spec:
 
     node(label) {
       try {
-        this.build('staging')
+        // this.build('staging')
         this.deploy('staging')
         this.endToEndTests('staging')
       } catch (err) {
